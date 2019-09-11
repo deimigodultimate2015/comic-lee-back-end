@@ -1,16 +1,14 @@
 package com.example.demo.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,20 +25,21 @@ public class Page {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@Column
+	@Min(0)
+	private int index;
+	
 	@Column(length = 260)
 	private String uri;
 	
-	@Column(length = 3)
-	private String type;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "page")
-	private List<ComicPage> comics = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ComicInfo comic ;
 
-	public Page(String uri, String type, List<ComicPage> comics) {
+	public Page(@Min(0) int index, String uri, ComicInfo comic) {
 		super();
+		this.index = index;
 		this.uri = uri;
-		this.type = type;
-		this.comics = comics;
+		this.comic = comic;
 	}
-	
+
 }

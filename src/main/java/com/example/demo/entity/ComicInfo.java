@@ -63,7 +63,7 @@ public class ComicInfo {
 	private Set<Tag> tags = new HashSet<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
-	private List<ComicPage> pages = new ArrayList<>();
+	private List<Page> pages = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_comic_favorite",

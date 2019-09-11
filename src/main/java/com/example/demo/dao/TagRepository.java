@@ -7,5 +7,5 @@ import com.example.demo.entity.Tag;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Integer>{
-
+	boolean existsByName(String name);
 }
