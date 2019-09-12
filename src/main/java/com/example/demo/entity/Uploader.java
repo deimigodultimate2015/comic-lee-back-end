@@ -50,12 +50,14 @@ public class Uploader {
 
 	public Uploader(@Length(min = 9, max = 80) @NotNull String username, String password, @Email @NotNull String email,
 			@Length(min = 3, max = 80) String team, @Length(min = 5, max = 80) @NotNull String displayName) {
+		
 		super();
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.team = team;
 		this.displayName = displayName;
+		
 	}
 	
 	

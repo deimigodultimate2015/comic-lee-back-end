@@ -8,4 +8,6 @@ import com.example.demo.entity.Uploader;
 @Repository
 public interface UploaderRepository extends JpaRepository<Uploader, Integer>{
 
+	public boolean existsByUsername(String username);
+	
 }
