@@ -1,10 +1,15 @@
 package com.example.demo.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -47,6 +52,9 @@ public class Uploader {
 	@Length(min = 5, max = 80)
 	@NotNull
 	private String displayName;
+	
+	@OneToMany(fetch = 	FetchType.LAZY, mappedBy = "uploader")
+	private Set<ComicInfo> comics = new HashSet<>();
 
 	public Uploader(@Length(min = 9, max = 80) @NotNull String username, String password, @Email @NotNull String email,
 			@Length(min = 3, max = 80) String team, @Length(min = 5, max = 80) @NotNull String displayName) {

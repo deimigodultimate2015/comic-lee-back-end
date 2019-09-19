@@ -41,16 +41,20 @@ public class ComicInfo {
 	
 	@Column(length = 255)
 	@Length(min = 6, max = 255)
-	@NotNull
+	@NotNull(message = "Comic title must not be null")
 	private String title;
 	
 	@Column(length = 70)
-	@Length(min = 6, max = 70)
+	@Length(min = 2, max = 70)
 	private String artist;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition = "timestamp without time zone", name="upload_time")
 	private Date uploadTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "timestamp without time zone", name="modified_time")
+	private Date modifiedTime;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "uploader_id")

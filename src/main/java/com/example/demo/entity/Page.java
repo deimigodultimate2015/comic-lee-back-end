@@ -30,16 +30,20 @@ public class Page {
 	private int index;
 	
 	@Column(length = 260)
-	private String uri;
+	private String name;
+	
+	@Column
+	private boolean removed;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ComicInfo comic ;
 
-	public Page(@Min(0) int index, String uri, ComicInfo comic) {
+	public Page(@Min(0) int index, String name, boolean removed, ComicInfo comic) {
 		super();
 		this.index = index;
-		this.uri = uri;
+		this.name = name;
 		this.comic = comic;
+		this.removed = removed;
 	}
 
 }

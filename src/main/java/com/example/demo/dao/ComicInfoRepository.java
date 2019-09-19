@@ -8,4 +8,6 @@ import com.example.demo.entity.ComicInfo;
 @Repository
 public interface ComicInfoRepository extends JpaRepository<ComicInfo, Integer>{
 	
+	public boolean existsByTitle(String title);
+	
 }
