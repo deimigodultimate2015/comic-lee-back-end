@@ -36,7 +36,7 @@ class UserComicsRowMapper implements RowMapper<UserComics> {
 		ucomics.setComicId(rs.getInt(2));
 		ucomics.setCoverId(rs.getInt(4));
 		
-		return null;
+		return ucomics;
 	}
 	
 }

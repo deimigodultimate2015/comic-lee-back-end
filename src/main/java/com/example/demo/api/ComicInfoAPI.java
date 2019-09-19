@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.request.ComicRequest;
 import com.example.demo.dto.response.ComicResponse;
+import com.example.demo.dto.response.UserComics;
 import com.example.demo.service.ComicService;
 
 @RestController
@@ -52,5 +53,10 @@ public class ComicInfoAPI {
 	public ResponseEntity<ComicResponse> updateComicInfo(@PathVariable("comic_id") int id, @RequestBody ComicRequest comicInfo) {
 		return new ResponseEntity<>(comicService.updateComicInfoById(comicInfo, id), HttpStatus.ACCEPTED);
 		
+	}
+	
+	@GetMapping("/user/comics")
+	public ResponseEntity<List<UserComics>> getUserComics() {
+		return new ResponseEntity<>(comicService.getUserComics(), HttpStatus.ACCEPTED);
 	}
 }

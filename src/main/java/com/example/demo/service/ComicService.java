@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.request.ComicRequest;
 import com.example.demo.dto.response.ComicResponse;
+import com.example.demo.dto.response.UserComics;
 
 @Service
 public interface ComicService {
@@ -17,4 +18,6 @@ public interface ComicService {
 	public ComicResponse getComicById(int id);
 
 	public ComicResponse updateComicInfoById(ComicRequest comicInfo , int comicId);
+	
+	public List<UserComics> getUserComics();
 }

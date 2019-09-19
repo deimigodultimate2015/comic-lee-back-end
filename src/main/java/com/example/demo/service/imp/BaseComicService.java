@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.ComicInfoRepository;
 import com.example.demo.dao.UploaderRepository;
+import com.example.demo.dao.UserManualRepository;
 import com.example.demo.dto.request.ComicRequest;
 import com.example.demo.dto.response.ComicResponse;
 import com.example.demo.dto.response.TagResponse;
+import com.example.demo.dto.response.UserComics;
 import com.example.demo.entity.ComicInfo;
 import com.example.demo.entity.Tag;
 import com.example.demo.error.custom.CustomObjectAlreadyExist;
@@ -28,10 +30,18 @@ import com.example.demo.service.ComicService;
 public class BaseComicService implements ComicService {
 
 	@Autowired
+	UserManualRepository userMRepo;
+	
+	@Autowired
 	ComicInfoRepository comicInfoRepository;
 	
 	@Autowired
 	UploaderRepository uploaderRepository;
+	
+	@Override
+	public List<UserComics> getUserComics() {
+		return userMRepo.getUserComics();
+	}
 	
 	@Override
 	public ComicResponse saveComicDTO(ComicRequest comicDTO) {
