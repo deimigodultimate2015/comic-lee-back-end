@@ -1,14 +1,15 @@
 package com.example.demo.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.response.UserComics;
+import com.example.demo.dto.request.SigninForm;
+import com.example.demo.dto.request.Signup;
+import com.example.demo.dto.response.JwtResponse;
+import com.example.demo.dto.response.Signin;
 
 @Service
 public interface UserService {
 
-	public List<UserComics> getUserComics();
-	
+	public Signin signupNewUser(Signup signupInfo) ;
+	public JwtResponse signinUser(SigninForm signinForm, String loginRole);
 }

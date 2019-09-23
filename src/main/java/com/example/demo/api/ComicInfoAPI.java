@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class ComicInfoAPI {
 	ComicService comicService;
 	
 	@PostMapping("/comic")
+	@PreAuthorize("hasRole('UPLOADER')")
 	public ResponseEntity<ComicResponse> storeComicInfo(@RequestBody ComicRequest comicInfo) {
 		
 		ComicResponse comicResponse = comicService.saveComicDTO(comicInfo);
@@ -44,6 +46,7 @@ public class ComicInfoAPI {
 		return new ResponseEntity<>(comicResponse, HttpStatus.ACCEPTED);
 	}
 	
+	@PreAuthorize("hasRole('UPLOADER')")
 	@GetMapping("/comics")
 	public ResponseEntity<List<ComicResponse>> getAllComics() {
 		return new ResponseEntity<>(comicService.getAllComics(), HttpStatus.ACCEPTED);

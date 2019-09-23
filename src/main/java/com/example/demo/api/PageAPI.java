@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,7 @@ public class PageAPI {
                 .body(bytes);
     }
 	
+    @PreAuthorize("hasRole('UPLOADER')")
 	@PostMapping("/page")
 	public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile page, @RequestParam("comicId") int comicId, @RequestParam("index") int index) {
 		pageService.pageUpload(page, index, comicId);
@@ -61,6 +63,7 @@ public class PageAPI {
 	}
 	
 	@PutMapping("/pages/{comic_id}")
+	@PreAuthorize("hasRole('UPLOADER')")
 	public ResponseEntity<String> updatePageStatus(@PathVariable("comic_id")int id, @RequestBody List<Integer> pages) {
 		return new ResponseEntity<>(pageService.updateAllPages(id, pages), HttpStatus.ACCEPTED);
 	}

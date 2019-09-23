@@ -3,6 +3,7 @@ package com.example.demo.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ public class UploaderAPI {
 	StatisticService statisticServ;
 
 	@GetMapping("/statistic/uploadercomic/{display_name}")
+	@PreAuthorize("hasRole('UPLOADER')")
 	public ResponseEntity<byte[]> getUploaderComicResponse(@PathVariable("display_name") String name) {
 		
 		byte[] fileExcel =  statisticServ.getUploaderComicSummary(name);
