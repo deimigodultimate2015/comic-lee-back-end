@@ -42,18 +42,19 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		}
 	
 		if(this.isUploader) {
-			Uploader uploader = uploaderRepository.findByUsername(this.currentUsername).orElseThrow(()
+			Uploader uploader = uploaderRepository.findByUsername(this.currentUsername.split("\\|")[0]).orElseThrow(()
 					-> new ObjectNotFoundException("Not found username: " + this.currentUsername));
 			
 			userDetails = UserPrinciple.build(uploader);
 		} else {
-			User user = userRepository.findByUsername(this.currentUsername).orElseThrow(()
+			User user = userRepository.findByUsername(this.currentUsername.split("\\|")[0]).orElseThrow(()
 					-> new ObjectNotFoundException("Not found username: " + this.currentUsername));
 			
 			userDetails = UserPrinciple.build(user);
 			
 		}
 		
+		this.isItNotLoadDirectlyToLoadUserByUsername = false;
 		return userDetails;
 	
 	}

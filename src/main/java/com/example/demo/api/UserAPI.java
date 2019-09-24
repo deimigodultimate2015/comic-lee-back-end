@@ -28,12 +28,12 @@ public class UserAPI {
 		return new ResponseEntity<>(userService.signupNewUser(signup), HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping("auth/user/login")
+	@PostMapping("/auth/user/login")
 	public ResponseEntity<JwtResponse> signinUser(@RequestBody SigninForm form) {
 		return new ResponseEntity<>(userService.signinUser(form, "USER"), HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping("auth/admin/login")
+	@PostMapping("/auth/admin/login")
 	public ResponseEntity<JwtResponse> signinAdmin(@RequestBody SigninForm form) {
 		return new ResponseEntity<>(userService.signinUser(form, "ADMIN"), HttpStatus.ACCEPTED);
 	}

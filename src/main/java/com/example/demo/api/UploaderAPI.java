@@ -20,8 +20,8 @@ public class UploaderAPI {
 	@Autowired
 	StatisticService statisticServ;
 
-	@GetMapping("/statistic/uploadercomic/{display_name}")
 	@PreAuthorize("hasRole('UPLOADER')")
+	@GetMapping("/statistic/uploadercomic/{display_name}")
 	public ResponseEntity<byte[]> getUploaderComicResponse(@PathVariable("display_name") String name) {
 		
 		byte[] fileExcel =  statisticServ.getUploaderComicSummary(name);
