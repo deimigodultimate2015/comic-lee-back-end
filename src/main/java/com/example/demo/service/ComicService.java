@@ -13,7 +13,7 @@ public interface ComicService {
 
 	public ComicResponse saveComicDTO(ComicRequest comicDTO);
 	
-	public List<ComicResponse> getAllComics();
+	public List<ComicResponse> getAllComics(int id);
 	
 	public ComicResponse getComicById(int id);
 

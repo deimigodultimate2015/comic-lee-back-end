@@ -47,9 +47,9 @@ public class ComicInfoAPI {
 	}
 	
 	@PreAuthorize("hasRole('UPLOADER')")
-	@GetMapping("/comics")
-	public ResponseEntity<List<ComicResponse>> getAllComics() {
-		return new ResponseEntity<>(comicService.getAllComics(), HttpStatus.ACCEPTED);
+	@GetMapping("/comics/{uploaderId}")
+	public ResponseEntity<List<ComicResponse>> getAllComics(@PathVariable("uploaderId") int id) {
+		return new ResponseEntity<>(comicService.getAllComics(id), HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping("/comic/{comic_id}")

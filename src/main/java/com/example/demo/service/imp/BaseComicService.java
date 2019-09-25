@@ -91,11 +91,13 @@ public class BaseComicService implements ComicService {
 		return comicInfo;
 	}
 	
-	public List<ComicResponse> getAllComics() {
+	public List<ComicResponse> getAllComics(int id) {
 		List<ComicResponse> list = new ArrayList<>();
 		comicInfoRepository.findAll().forEach(comic -> {
-			comic.setUploader(comic.getUploader());
-			list.add(new ComicResponse(comic));
+			if(comic.getUploader().getId() == id) {
+				comic.setUploader(comic.getUploader());
+				list.add(new ComicResponse(comic));
+			}
 		});
 		
 		return list;
