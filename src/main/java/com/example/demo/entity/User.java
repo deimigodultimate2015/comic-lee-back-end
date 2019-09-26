@@ -35,7 +35,7 @@ public class User {
 	private int id;
 	
 	@Column(length = 80)
-	@Length(min = 9, max = 80)
+	@Length(min = 9, max = 80, message = "Username must contain at least 9 character")
 	@NaturalId @NotNull
 	private String username;
 	
@@ -44,7 +44,7 @@ public class User {
 	private String password;
 	
 	@Column(length = 270)
-	@Email	@NaturalId(mutable = true)	@NotNull
+	@Email(message = "Invalid email address")	@NaturalId(mutable = true)	@NotNull
 	private String email;
 	
 	@Column(name = "display_name", length = 80, unique = true)

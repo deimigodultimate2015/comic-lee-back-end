@@ -23,6 +23,7 @@ public class ComicResponse {
 	private String artist;
 	private List<TagResponse> tags;
 	private UploaderComicResponse uploader;
+	private int comicFavorites;
 	
 	public ComicResponse(ComicRequest comicRequest, int comicId, Uploader uploader) {
 		this.id = comicId;

@@ -62,4 +62,10 @@ public class ComicInfoAPI {
 	public ResponseEntity<List<UserComics>> getUserComics() {
 		return new ResponseEntity<>(comicService.getUserComics(), HttpStatus.ACCEPTED);
 	}
+	
+	@GetMapping("/user/favorite/comics/{username}")
+	public ResponseEntity<List<UserComics>> getUserFavorComics(@PathVariable("username") String username) {
+		return new ResponseEntity<>(comicService.getUserFavorComics(username), HttpStatus.ACCEPTED);
+	}
+	
 }

@@ -11,4 +11,5 @@ public interface UserManualRepository {
 	
 	public List<UserComics> getUserComics();
 	
+	public List<UserComics> getUserFavoriteComics(int userId);
 }

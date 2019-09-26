@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UploaderComicSummary {
 
-	String uploader;
-	String email;
-	String team;
-	String comicTitle;
-	String artist;
-	Long total;
+	String title;
+	String uploadTime;
+	String modifiedTime;
+	long totalFavorite;
+	long unusedPages;
+	long usedPage;
 	
 }

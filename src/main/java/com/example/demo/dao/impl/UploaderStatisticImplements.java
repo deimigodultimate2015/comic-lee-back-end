@@ -2,6 +2,7 @@ package com.example.demo.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class UploaderStatisticImplements implements UploaderStatisticRepository 
 	
 	public List<UploaderComicSummary> getUploaderComicSummary(String displayName) {
 		
-		String query = "select * from uploader_comic_summary('hanazuki20')";
-		return jdbcTemplate.query(query, new UploaderStatisticRowMapper());
+		String query = "select * from uploader_comic_summary(?)";
+		return jdbcTemplate.query(query, new Object[] {displayName}, new UploaderStatisticRowMapper());
 		
 	}
 }
@@ -33,12 +34,14 @@ class UploaderStatisticRowMapper implements RowMapper<UploaderComicSummary> {
 	public UploaderComicSummary mapRow(ResultSet rs, int rowNum) throws SQLException {
 		UploaderComicSummary ucs = new UploaderComicSummary();
 		
-		ucs.setUploader(rs.getString(1));
-		ucs.setEmail(rs.getString(2));
-		ucs.setTeam(rs.getString(3));
-		ucs.setComicTitle(rs.getString(4));
-		ucs.setArtist(rs.getString(5));
-		ucs.setTotal(rs.getLong(6));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS");
+		ucs.setTitle(rs.getString(1));
+		ucs.setUploadTime(sdf.format(rs.getTimestamp(2)));
+		ucs.setModifiedTime(sdf.format(rs.getTimestamp(3)));
+		ucs.setTotalFavorite(rs.getLong(4));
+		ucs.setUnusedPages(rs.getLong(5));
+		ucs.setUsedPage(rs.getLong(6));
 		
 		return ucs;
 	}

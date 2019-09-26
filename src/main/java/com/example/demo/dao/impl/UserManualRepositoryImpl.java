@@ -24,6 +24,11 @@ public class UserManualRepositoryImpl implements UserManualRepository{
 		return jdbcTemplate.query(query, new UserComicsRowMapper());
 	}
 	
+	public List<UserComics> getUserFavoriteComics(int userId) {
+		String query = "select * from specific_user_comics_display(?)";
+		return jdbcTemplate.query(query, new Object[] {userId} ,new UserComicsRowMapper());
+	}
+	
 
 }
 

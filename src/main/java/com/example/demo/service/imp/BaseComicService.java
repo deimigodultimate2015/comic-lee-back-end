@@ -15,12 +15,14 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dao.ComicInfoRepository;
 import com.example.demo.dao.UploaderRepository;
 import com.example.demo.dao.UserManualRepository;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.dto.request.ComicRequest;
 import com.example.demo.dto.response.ComicResponse;
 import com.example.demo.dto.response.TagResponse;
 import com.example.demo.dto.response.UserComics;
 import com.example.demo.entity.ComicInfo;
 import com.example.demo.entity.Tag;
+import com.example.demo.entity.User;
 import com.example.demo.error.custom.CustomObjectAlreadyExist;
 import com.example.demo.error.custom.CustomeObjectConstraintException;
 import com.example.demo.error.custom.ObjectNotFoundException;
@@ -37,6 +39,9 @@ public class BaseComicService implements ComicService {
 	
 	@Autowired
 	UploaderRepository uploaderRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Override
 	public List<UserComics> getUserComics() {
@@ -111,7 +116,10 @@ public class BaseComicService implements ComicService {
 			throw new ObjectNotFoundException("Can not find comic with id "+id);
 		}
 		
-		return new ComicResponse(comicInfo.get());
+		ComicResponse comicResponse = new ComicResponse(comicInfo.get());
+		comicResponse.setComicFavorites(comicInfoRepository.countComicFavorites(id));
+		
+		return comicResponse;
 	}
 	
 //=====================================================================================================
@@ -137,13 +145,22 @@ public class BaseComicService implements ComicService {
 			);
 			
 			comicInf.get().setTags(tags);
-			
 			comicInfoRepository.save(comicInf.get());
 			
 		}
 		
 		return new ComicResponse(comicInf.get());
 		
+	}
+
+	@Override
+	public List<UserComics> getUserFavorComics(String username) {
+		Optional<User> user = userRepository.findByUsername(username);
+		if(user.isPresent()) {
+			return userMRepo.getUserFavoriteComics(user.get().getId());
+		} else {
+			throw new ObjectNotFoundException("Not found user with username is: " + username);
+		}
 	}
 	
 

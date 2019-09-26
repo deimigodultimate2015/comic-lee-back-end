@@ -1,5 +1,7 @@
 package com.example.demo.service.imp;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,7 @@ import com.example.demo.dto.response.JwtResponse;
 import com.example.demo.dto.response.Signin;
 import com.example.demo.entity.User;
 import com.example.demo.error.custom.CustomObjectAlreadyExist;
+import com.example.demo.error.custom.CustomeObjectConstraintException;
 import com.example.demo.security.jwt.JwtProvider;
 import com.example.demo.service.UserService;
 
@@ -37,11 +40,15 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Signin signupNewUser(Signup signupInfo) {
 		if(userRepository.existsByUsername(signupInfo.getUsername())) {
-			throw new CustomObjectAlreadyExist("Username: '"+signupInfo.getUsername()+"' Already taken");
+			throw new CustomObjectAlreadyExist("Sorry but username: '"+signupInfo.getUsername()+"' Already taken uwu");
+		}
+		
+		if(userRepository.existsByDisplayName(signupInfo.getDisplayName())) {
+			throw new CustomObjectAlreadyExist("Sorry but display name: '"+signupInfo.getUsername()+"' Already taken uwu");
 		}
 		
 		if(userRepository.existsByEmail(signupInfo.getEmail())) {
-			throw new CustomObjectAlreadyExist("Email: '"+signupInfo.getUsername()+"' Already taken");
+			throw new CustomObjectAlreadyExist("Sorry but email: '"+signupInfo.getEmail()+"' Already taken uwu");
 		}
 		
 		encoder = new BCryptPasswordEncoder();
@@ -52,7 +59,13 @@ public class UserServiceImpl implements UserService{
 		user.setEmail(signupInfo.getEmail());
 		user.setDisplayName(signupInfo.getDisplayName());
 		
-		userRepository.save(user);
+		try {
+			userRepository.save(user);
+ 		} catch (ConstraintViolationException cve) {
+ 			throw new CustomeObjectConstraintException(cve);
+ 		} catch (Exception ex) {
+ 			
+ 		}
 		
 		return new Signin(signupInfo);
 	}

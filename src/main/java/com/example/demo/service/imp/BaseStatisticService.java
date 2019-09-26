@@ -1,13 +1,21 @@
 package com.example.demo.service.imp;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.UploaderStatisticRepository;
@@ -17,40 +25,69 @@ import com.example.demo.service.StatisticService;
 @Service
 public class BaseStatisticService implements StatisticService{
 
+	@Value("${excel.template.sourcepath}")
+	String sourcePath;
+	
+	@Value("${excel.template.usepath}")
+	String usePath;
+	
 	@Autowired
 	UploaderStatisticRepository statisticRepo ;
 	
-	int ucsIndex = 2;
+	@Autowired
+    ResourceLoader resourceLoader;
+	
+	int ucsIndex = 6;
+	int totalFavorite = 0;
+	int totalComics = 0;
 	XSSFRow ucsRow ;
 	
 	@Override
 	public byte[] getUploaderComicSummary(String uploaderName) {
 		List<UploaderComicSummary> ucsList =  statisticRepo.getUploaderComicSummary(uploaderName);
-		XSSFWorkbook  workbook = new XSSFWorkbook();
-		XSSFSheet sheet = workbook.createSheet("statistic_01");
 		
-		//Init header
-		ucsRow = sheet.createRow(1);
-		ucsRow.createCell(0).setCellValue("uploader");
-		ucsRow.createCell(1).setCellValue("email");
-		ucsRow.createCell(2).setCellValue("team");
-		ucsRow.createCell(3).setCellValue("comic title");
-		ucsRow.createCell(4).setCellValue("artist");
-		ucsRow.createCell(5).setCellValue("total page (use)");
+		XSSFWorkbook workbook = null;
+		try {
+			workbook = new XSSFWorkbook(getExcelTemplateByName("uploader_comic_statistic.xlsx"));
+		} catch (InvalidFormatException e1) {
+			e1.printStackTrace();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
 		
+		XSSFSheet sheet = workbook.getSheet("comic_statistic");
+
 		ucsList.forEach(ucs -> {
 			ucsRow = sheet.createRow(ucsIndex);
-			ucsRow.createCell(0).setCellValue(ucs.getUploader());
-			ucsRow.createCell(1).setCellValue(ucs.getEmail());
-			ucsRow.createCell(2).setCellValue(ucs.getTeam());
-			ucsRow.createCell(3).setCellValue(ucs.getComicTitle());
-			ucsRow.createCell(4).setCellValue(ucs.getArtist());
-			ucsRow.createCell(5).setCellValue(ucs.getTotal());
-			
+			ucsRow.createCell(0).setCellValue(ucs.getTitle());
+			ucsRow.createCell(1).setCellValue(ucs.getUploadTime());
+			ucsRow.createCell(2).setCellValue(ucs.getModifiedTime());
+			ucsRow.createCell(3).setCellValue(ucs.getUsedPage());
+			ucsRow.createCell(4).setCellValue(ucs.getUnusedPages());
+			ucsRow.createCell(5).setCellValue(ucs.getTotalFavorite());
+			totalFavorite += ucs.getTotalFavorite();
+			totalComics += 1;
 			ucsIndex += 1;
 		});
 		
-		ucsIndex = 2;
+		//Summary
+		XSSFRow row1 = sheet.createRow(1);
+		row1.createCell(0).setCellValue("Uploader: " + uploaderName);
+		row1.createCell(3).setCellValue("Total favorite: " + totalFavorite);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		
+		XSSFRow row2 = sheet.createRow(2);
+		row2.createCell(0).setCellValue("Date print: " + sdf.format(new Date()));
+		row2.createCell(3).setCellValue("Total view: On coming! This fall! 9/27/2019");
+		
+		XSSFRow row3 = sheet.createRow(3);
+		row3.createCell(0).setCellValue("Total comics: " + totalComics);
+		row3.createCell(3).setCellValue("Rank: On coming! Nex fall !");
+		
+		totalFavorite = 0;
+		totalComics = 0;
+		ucsIndex = 6;
 		
 		ByteArrayOutputStream output = new ByteArrayOutputStream(1024);
 		byte[] bookArray = new byte[1024] ;
@@ -69,6 +106,15 @@ public class BaseStatisticService implements StatisticService{
 		}
 		
 		return bookArray;
+		
+	}
+	
+	
+	//Create new file to keep template not be modified
+	public File getExcelTemplateByName(String fileName) throws IOException {
+		Files.copy(new File(this.sourcePath+fileName).toPath(), new File(this.usePath+fileName).toPath()
+				, StandardCopyOption.REPLACE_EXISTING);
+		return new File(usePath+fileName);
 		
 	}
 

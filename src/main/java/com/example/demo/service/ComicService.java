@@ -20,4 +20,6 @@ public interface ComicService {
 	public ComicResponse updateComicInfoById(ComicRequest comicInfo , int comicId);
 	
 	public List<UserComics> getUserComics();
+	
+	public List<UserComics> getUserFavorComics(String username);
 }
