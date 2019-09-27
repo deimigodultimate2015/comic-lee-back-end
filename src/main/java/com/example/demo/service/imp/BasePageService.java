@@ -77,10 +77,10 @@ public class BasePageService implements PageService{
 	
 	//Store image info to local
 	public String storeImage(MultipartFile page, int pageId) {
-		rootLocation = Paths.get(path);
+		rootLocation = Paths.get(path); //Get path
 		
 		try {
-			if(page.isEmpty()) {
+			if(page.isEmpty()) { //Check if not exist
 				return "notfound.PNG";
 			} else if (page.getContentType().equalsIgnoreCase("image/png") &&
 					page.getContentType().equalsIgnoreCase("image/jpeg") &&
