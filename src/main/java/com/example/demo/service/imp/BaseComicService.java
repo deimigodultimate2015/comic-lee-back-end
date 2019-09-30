@@ -13,14 +13,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.ComicInfoRepository;
+import com.example.demo.dao.ComicViewRepository;
+import com.example.demo.dao.ReaderRepository;
 import com.example.demo.dao.UploaderRepository;
+import com.example.demo.dao.UploaderStatisticRepository;
 import com.example.demo.dao.UserManualRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.dto.request.ComicRequest;
+import com.example.demo.dto.request.ViewRequest;
 import com.example.demo.dto.response.ComicResponse;
 import com.example.demo.dto.response.TagResponse;
 import com.example.demo.dto.response.UserComics;
+import com.example.demo.dto.response.ViewDay;
+import com.example.demo.dto.response.ViewsReport;
 import com.example.demo.entity.ComicInfo;
+import com.example.demo.entity.ComicView;
+import com.example.demo.entity.Reader;
 import com.example.demo.entity.Tag;
 import com.example.demo.entity.User;
 import com.example.demo.error.custom.CustomObjectAlreadyExist;
@@ -42,6 +50,15 @@ public class BaseComicService implements ComicService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	ReaderRepository readerRepository;
+	
+	@Autowired
+	ComicViewRepository comicViewRepository;
+	
+	@Autowired
+	UploaderStatisticRepository uploaderStatisticRepository;
 	
 	@Override
 	public List<UserComics> getUserComics() {
@@ -162,6 +179,39 @@ public class BaseComicService implements ComicService {
 			throw new ObjectNotFoundException("Not found user with username is: " + username);
 		}
 	}
-	
 
+	@Override
+	public void countView(ViewRequest viewRequest) {
+		Optional<Reader> reader = readerRepository.findByUuidAndComicInfoId(viewRequest.getUuid(), viewRequest.getComicId());
+		if(!reader.isPresent()) {
+			Reader newReader = readerRepository.save(new Reader(viewRequest.getUuid(), viewRequest.getComicId(), new Date().getTime() / 1000));
+			comicViewRepository.save(new ComicView(newReader));
+		} else if(reader.isPresent()) {
+			if(ComicView.isCountLegit(reader.get().getLatestView())) {
+				
+				reader.get().setLatestView(new Date().getTime() / 1000);
+				readerRepository.save(reader.get());
+				comicViewRepository.save(new ComicView(reader.get()));
+			
+			} else {
+				System.out.println("Eto...Sumimasen");
+			}
+		}
+	}
+
+	@Override
+	public ViewsReport getViewReport(int comicId) {
+		
+		List<ViewDay> viewList = 
+				uploaderStatisticRepository.getComicViewsPrevious7Days(comicId);
+		
+		ViewsReport viewsReport = new ViewsReport();
+		viewsReport.setViewDays(viewList);
+		viewsReport.setTotalViews(comicInfoRepository.getTotalView(comicId));
+		
+		return viewsReport;
+		
+	}
+	
+	
 }

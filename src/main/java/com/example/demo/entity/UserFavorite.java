@@ -42,14 +42,12 @@ public class UserFavorite {
 	}
 	
 	public UserFavorite(int userId, int comicInfoId, boolean stillTrue) {
-		User userF = new User();
-		ComicInfo comic = new ComicInfo();
+		this.user = new User();
+		this.comicInfo = new ComicInfo();
 		
-		userF.setId(userId);
-		comic.setId(comicInfoId);
+		this.user.setId(userId);
+		this.comicInfo.setId(comicInfoId);
 		
-		this.user = userF;
-		this.comicInfo = comic;
 		this.stillTrue = stillTrue;
 	}
 	

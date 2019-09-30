@@ -40,6 +40,7 @@ public class BaseStatisticService implements StatisticService{
 	int ucsIndex = 6;
 	int totalFavorite = 0;
 	int totalComics = 0;
+	int totalViews =0;
 	XSSFRow ucsRow ;
 	
 	@Override
@@ -65,6 +66,8 @@ public class BaseStatisticService implements StatisticService{
 			ucsRow.createCell(3).setCellValue(ucs.getUsedPage());
 			ucsRow.createCell(4).setCellValue(ucs.getUnusedPages());
 			ucsRow.createCell(5).setCellValue(ucs.getTotalFavorite());
+			ucsRow.createCell(6).setCellValue(ucs.getTotalView());
+			totalViews += ucs.getTotalView();
 			totalFavorite += ucs.getTotalFavorite();
 			totalComics += 1;
 			ucsIndex += 1;
@@ -79,7 +82,7 @@ public class BaseStatisticService implements StatisticService{
 		
 		XSSFRow row2 = sheet.createRow(2);
 		row2.createCell(0).setCellValue("Date print: " + sdf.format(new Date()));
-		row2.createCell(3).setCellValue("Total view: On coming! This fall! 9/27/2019");
+		row2.createCell(3).setCellValue("Total view: " + totalViews);
 		
 		XSSFRow row3 = sheet.createRow(3);
 		row3.createCell(0).setCellValue("Total comics: " + totalComics);
@@ -88,6 +91,7 @@ public class BaseStatisticService implements StatisticService{
 		totalFavorite = 0;
 		totalComics = 0;
 		ucsIndex = 6;
+		totalViews = 0;
 		
 		ByteArrayOutputStream output = new ByteArrayOutputStream(1024);
 		byte[] bookArray = new byte[1024] ;

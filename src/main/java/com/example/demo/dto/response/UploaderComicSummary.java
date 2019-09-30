@@ -15,5 +15,6 @@ public class UploaderComicSummary {
 	long totalFavorite;
 	long unusedPages;
 	long usedPage;
+	long totalView;
 	
 }

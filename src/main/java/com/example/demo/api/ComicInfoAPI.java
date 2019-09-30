@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.request.ComicRequest;
+import com.example.demo.dto.request.ViewRequest;
 import com.example.demo.dto.response.ComicResponse;
 import com.example.demo.dto.response.UserComics;
+import com.example.demo.dto.response.ViewsReport;
 import com.example.demo.service.ComicService;
 
 @RestController
@@ -68,4 +70,14 @@ public class ComicInfoAPI {
 		return new ResponseEntity<>(comicService.getUserFavorComics(username), HttpStatus.ACCEPTED);
 	}
 	
+	@PostMapping("/view")
+	public ResponseEntity<String> countView(@RequestBody ViewRequest viewRequest) {
+		comicService.countView(viewRequest);
+		return ResponseEntity.ok("Sent");
+	}
+	
+	@GetMapping("/views/{comicId}")
+	public ResponseEntity<ViewsReport> countView(@PathVariable("comicId") int comicId) {
+		return new ResponseEntity<>(comicService.getViewReport(comicId), HttpStatus.ACCEPTED);	
+	}
 }

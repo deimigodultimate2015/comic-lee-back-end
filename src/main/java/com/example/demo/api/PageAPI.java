@@ -32,7 +32,7 @@ import com.example.demo.service.PageService;
 @CrossOrigin("*")
 public class PageAPI {
 	
-	@Autowired
+	@Autowired// Poly
 	@Qualifier("BasePageService")
 	PageService pageService;
 	

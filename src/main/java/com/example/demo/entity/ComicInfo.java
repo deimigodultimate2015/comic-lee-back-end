@@ -69,6 +69,9 @@ public class ComicInfo {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
 	private List<Page> pages = new ArrayList<>();
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
+	private List<Reader> views = new ArrayList<>();
+//	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_comic_favorite",
 			joinColumns = @JoinColumn(name = "comic_id"),
