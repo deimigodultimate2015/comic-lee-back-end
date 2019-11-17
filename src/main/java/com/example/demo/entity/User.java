@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -51,6 +54,9 @@ public class User {
 	@Length(min = 5, max = 80)
 	@NotNull
 	private String displayName;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
+	private List<Comment> comments = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_comic_favorite",
