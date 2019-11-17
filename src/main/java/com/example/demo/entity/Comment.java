@@ -41,11 +41,20 @@ public class Comment {
 	private Date createdDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@NotBlank
 	private ComicInfo comic;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@NotBlank
 	private User user;
-	
-	
+
+	public Comment(int parentId, @NotBlank String content, Date createdDate, ComicInfo comic, User user) {
+		super();
+		this.parentId = parentId;
+		this.content = content;
+		this.createdDate = createdDate;
+		this.comic = comic;
+		this.user = user;
+	}
 	
 }
