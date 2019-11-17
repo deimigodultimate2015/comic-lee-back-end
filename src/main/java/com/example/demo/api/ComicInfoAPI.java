@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.request.ComicRequest;
 import com.example.demo.dto.request.ViewRequest;
 import com.example.demo.dto.response.ComicResponse;
+import com.example.demo.dto.response.PaginatedUserComics;
 import com.example.demo.dto.response.UserComics;
 import com.example.demo.dto.response.ViewsReport;
 import com.example.demo.service.ComicService;
@@ -61,8 +63,9 @@ public class ComicInfoAPI {
 	}
 	
 	@GetMapping("/user/comics")
-	public ResponseEntity<List<UserComics>> getUserComics() {
-		return new ResponseEntity<>(comicService.getUserComics(), HttpStatus.ACCEPTED);
+	public ResponseEntity<PaginatedUserComics> getUserComics(@RequestParam(name = "page", defaultValue = "1") int pageIndex,
+															 @RequestParam(name = "search", defaultValue = "") String keyword) {
+		return new ResponseEntity<>(comicService.getUserComics(10 , pageIndex, keyword), HttpStatus.ACCEPTED);
 	}
 	
 	@GetMapping("/user/favorite/comics/{username}")

@@ -22,6 +22,7 @@ import com.example.demo.dao.UserRepository;
 import com.example.demo.dto.request.ComicRequest;
 import com.example.demo.dto.request.ViewRequest;
 import com.example.demo.dto.response.ComicResponse;
+import com.example.demo.dto.response.PaginatedUserComics;
 import com.example.demo.dto.response.TagResponse;
 import com.example.demo.dto.response.UserComics;
 import com.example.demo.dto.response.ViewDay;
@@ -61,15 +62,24 @@ public class BaseComicService implements ComicService {
 	UploaderStatisticRepository uploaderStatisticRepository;
 	
 	@Override
-	public List<UserComics> getUserComics() {
-		return userMRepo.getUserComics();
+	public PaginatedUserComics getUserComics(int pageSize, int pageIndex, String keyword) {
+		
+		if(pageIndex < 1) pageIndex = 1;
+		
+		PaginatedUserComics userComics = new PaginatedUserComics();
+		userComics.setData(userMRepo.getUserComics(pageSize, pageIndex, keyword));
+		userComics.setTotalPage(Math.ceil( (comicInfoRepository.getCountUserComics()*1.0) / (pageSize * 1.0)));
+		userComics.setPageSize(pageSize);
+		userComics.setCurrentPage(pageIndex);
+		userComics.setSearch(keyword);
+		return userComics;
 	}
 	
 	@Override
 	public ComicResponse saveComicDTO(ComicRequest comicDTO) {
 		
 		ComicInfo comicInfo = comicRequestToComicInfo(comicDTO);
-		if(comicInfoRepository.existsByTitle(comicDTO.getTitle())) {
+		if(comicInfoRepository.existsByTitle(comicInfo.getTitle())) {
 			throw new CustomObjectAlreadyExist("\"" + comicDTO.getTitle() + "\" title already exist");
 		}
 		
@@ -106,7 +116,7 @@ public class BaseComicService implements ComicService {
 		
 		comicInfo = new ComicInfo();
 		comicInfo.setTags(list);
-		comicInfo.setTitle(comicRequest.getTitle());
+		comicInfo.setTitle(comicRequest.getTitle().trim());
 		comicInfo.setUploadTime(new Date());
 		comicInfo.setArtist(comicRequest.getArtist());
 		

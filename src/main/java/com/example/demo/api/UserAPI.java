@@ -53,4 +53,5 @@ public class UserAPI {
 	public ResponseEntity<Boolean> checkFavorite(@RequestBody FavoriteRequest request) {
 		return new ResponseEntity<>(favoriteService.isFavorited(request), HttpStatus.ACCEPTED);
 	}
+	
 }

@@ -19,9 +19,9 @@ public class UserManualRepositoryImpl implements UserManualRepository{
 	JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public List<UserComics> getUserComics() {
-		String query = "select * from user_comics_display()";
-		return jdbcTemplate.query(query, new UserComicsRowMapper());
+	public List<UserComics> getUserComics(int pageSize, int pageIndex, String keyword) {
+		String query = "select * from user_comics_display(?, ?, ?)";
+		return jdbcTemplate.query(query, new Object[]{pageSize, pageIndex, "%"+keyword+"%"}, new UserComicsRowMapper());
 	}
 	
 	public List<UserComics> getUserFavoriteComics(int userId) {

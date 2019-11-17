@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.request.ComicRequest;
 import com.example.demo.dto.request.ViewRequest;
 import com.example.demo.dto.response.ComicResponse;
+import com.example.demo.dto.response.PaginatedUserComics;
 import com.example.demo.dto.response.UserComics;
 import com.example.demo.dto.response.ViewsReport;
-import com.example.demo.entity.ComicInfo;
 
 @Service
 public interface ComicService {
@@ -22,7 +22,7 @@ public interface ComicService {
 
 	public ComicResponse updateComicInfoById(ComicRequest comicInfo , int comicId);
 	
-	public List<UserComics> getUserComics();
+	public PaginatedUserComics getUserComics(int pageSize, int pageIndex, String keyword);
 	
 	public List<UserComics> getUserFavorComics(String username);
 	

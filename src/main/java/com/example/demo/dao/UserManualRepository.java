@@ -9,7 +9,7 @@ import com.example.demo.dto.response.UserComics;
 @Repository
 public interface UserManualRepository {
 	
-	public List<UserComics> getUserComics();
+	public List<UserComics> getUserComics(int pageSize, int pageIndex, String keyword);
 	
 	public List<UserComics> getUserFavoriteComics(int userId);
 }

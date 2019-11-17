@@ -17,4 +17,7 @@ public interface ComicInfoRepository extends JpaRepository<ComicInfo, Integer>{
 	
 	@Query(nativeQuery = true, value = "select get_comic_total_view(:comicId)")
 	public Integer getTotalView(@Param("comicId") int comicId);
+	
+	@Query(nativeQuery = true, value = "select count_comics_user()")
+	public Integer getCountUserComics();
 }
