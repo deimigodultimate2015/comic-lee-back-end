@@ -12,8 +12,15 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Table(name = "comment_interaction")
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentInteraction {
 
 	@Id
@@ -26,9 +33,6 @@ public class CommentInteraction {
 	@Max(1)
 	private short state;
 	
-	@Column(name = "active_flag")
-	private boolean activeFlag;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull
 	private User user;
@@ -40,7 +44,6 @@ public class CommentInteraction {
 	public CommentInteraction(@Min(-1) @Max(1) short state, boolean activeFlag, User user, Comment comment) {
 		super();
 		this.state = state;
-		this.activeFlag = activeFlag;
 		this.user = user;
 		this.comment = comment;
 	}

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.example.demo.error.custom.CustomInvalidAuthenticator;
 import com.example.demo.error.custom.CustomInvalidInputException;
 import com.example.demo.error.custom.CustomObjectAlreadyExist;
 import com.example.demo.error.custom.CustomeObjectConstraintException;
@@ -50,5 +51,13 @@ public class RestResponseEntityExceptionHandler
 			RuntimeException ex, WebRequest request) {
 		
 		return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+	}
+	
+	@ExceptionHandler(value
+			= {CustomInvalidAuthenticator.class})
+	protected ResponseEntity<Object> handleInvalidAuthenticator(
+			RuntimeException ex, WebRequest request) {
+		
+		return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
 	}
 }

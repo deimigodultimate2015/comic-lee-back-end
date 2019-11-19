@@ -55,8 +55,11 @@ public class User {
 	@NotNull
 	private String displayName;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Comment> comments = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private List<CommentInteraction> commentInteractions = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_comic_favorite",
