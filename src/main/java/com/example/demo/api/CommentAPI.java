@@ -38,7 +38,7 @@ public class CommentAPI {
 	public ResponseEntity<ResponseComment> addComment(@RequestBody AddComment addComment) {
 		return new ResponseEntity<>(this.commentService.addComment(addComment), HttpStatus.CREATED);
 	}
-	
+
 	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping("/comment/remove")
 	public ResponseEntity<String> removeComment(@RequestBody RemoveComment removeComment) {
@@ -47,7 +47,7 @@ public class CommentAPI {
 	
 	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/reply")
-	public ResponseEntity<ResponseReply> removeComment(@RequestBody AddReply addReply) {
+	public ResponseEntity<ResponseReply> addReply(@RequestBody AddReply addReply) {
 		return new ResponseEntity<>(this.commentService.addReply(addReply), HttpStatus.CREATED);
 	}
 	

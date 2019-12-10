@@ -41,9 +41,7 @@ public class ResponseReply {
 		this.createdDate = comment.getCreatedDate();
 		this.parentId = comment.getParentId();
 		comment.getCommentInteractions().forEach(interaction -> {
-			if(interaction.getState() == 1) {
-				point += 1;
-			}
+			point += interaction.getState();
 			
 			if(interaction.getUser().getUsername().equals(username)) {
 				state = interaction.getState();

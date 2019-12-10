@@ -40,10 +40,7 @@ public class ResponseComment {
 		this.content = comment.getContent();
 		this.createdDate = comment.getCreatedDate();
 		comment.getCommentInteractions().forEach(interaction -> {
-			if(interaction.getState() == 1) {
-				point += 1;
-			}
-			
+			point += interaction.getState();
 
 			if(interaction.getUser().getUsername().equals(username)) {
 				state = interaction.getState();
