@@ -47,7 +47,7 @@ public class UploaderStatisticImplements implements UploaderStatisticRepository 
 		myDateList.forEach(dateToGet -> {
 			params.put("comicId", comicId);
 			params.put("day", dateToGet.getViewDay());
-			params.put("month", dateToGet.getViewMonth());
+			params.put("month", dateToGet.getViewMonth()+1);
 			params.put("year", dateToGet.getViewYear());
 			
 			Integer views = jdbcTemplateParam.queryForObject(query,params ,Integer.class);

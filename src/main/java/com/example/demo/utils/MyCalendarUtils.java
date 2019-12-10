@@ -14,7 +14,7 @@ public class MyCalendarUtils {
 		Calendar calendar = new GregorianCalendar();
 		List<MyDate> data7PreviousDays = new ArrayList<>();
 		
-		calendar.add(Calendar.MONTH, 1);
+//		calendar.add(Calendar.MONTH, 1);
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		
 		for(int i = 0; i < 7; i++) {
